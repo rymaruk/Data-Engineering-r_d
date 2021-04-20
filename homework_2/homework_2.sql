@@ -33,9 +33,19 @@ SELECT f.title as "Films" FROM film f
     LEFT JOIN inventory i
         ON f.film_id = i.film_id
             WHERE i.film_id IS NULL
-ORDER BY f.title
+ORDER BY f.title;
 
 -- вывести топ 3 актеров, которые больше всего появлялись в фильмах в категории “Children”. Если у нескольких актеров одинаковое кол-во фильмов, вывести всех..
+SELECT c.name as "Category", count(f.film_id) as "Quantity films", concat(a.first_name, ' ', a.last_name) as "Name"
+FROM category c
+    LEFT JOIN film_category fc on c.category_id = fc.category_id
+        LEFT JOIN film f ON f.film_id = fc.film_id
+            LEFT JOIN film_actor fa ON f.film_id = fa.film_id
+                LEFT JOIN actor a ON a.actor_id = fa.actor_id
+WHERE c.name = 'Children' AND f.film_id = fc.film_id
+GROUP BY c.category_id, "Name"
+ORDER BY 2 DESC
+LIMIT 3;
 
 -- вывести города с количеством активных и неактивных клиентов (активный — customer.active = 1). Отсортировать по количеству неактивных клиентов по убыванию.
 -- вывести категорию фильмов, у которой самое большое кол-во часов суммарной аренды в городах (customer.address_id в этом city), и которые начинаются на букву “a”. То же самое сделать для городов в которых есть символ “-”. Написать все в одном запросе.
