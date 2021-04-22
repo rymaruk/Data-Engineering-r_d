@@ -48,7 +48,6 @@ ORDER BY 2 DESC
 LIMIT 3;
 
 -- вывести города с количеством активных и неактивных клиентов (активный — customer.active = 1). Отсортировать по количеству неактивных клиентов по убыванию.
-
 SELECT c.city, count(cus.active) as "Active", count(cus.active) as "Inactive"  FROM city c
     LEFT JOIN address a ON a.city_id = c.city_id
         LEFT JOIN customer cus ON a.address_id = cus.address_id
