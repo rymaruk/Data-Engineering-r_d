@@ -56,6 +56,10 @@ SELECT c.city, count(cus1.active) as "Active", count(cus2.active) as "Inactive" 
             LEFT JOIN customer cus2 on (a.address_id = cus2.address_id AND cus2.active = 0)
 GROUP BY c.city
 
+
+
+
+
 -- (!) ВАРИАНТ РЕШЕНИЯ 2 --
 SELECT c.city, count(cus.active) as "Active", count(cus.active) as "Inactive"  FROM city c
     LEFT JOIN address a ON a.city_id = c.city_id
