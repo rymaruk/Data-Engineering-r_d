@@ -48,8 +48,6 @@ ORDER BY 2 DESC
 LIMIT 3;
 
 -- вывести города с количеством активных и неактивных клиентов (активный — customer.active = 1). Отсортировать по количеству неактивных клиентов по убыванию.
-
--- (!) ВАРИАНТ РЕШЕНИЯ 1 --
 SELECT c.city, count(cus1.active) as "Active", count(cus2.active) as "Inactive" FROM city c
     LEFT JOIN address a ON a.city_id = c.city_id
         LEFT JOIN customer cus1 ON (a.address_id = cus1.address_id AND cus1.active =1)
@@ -57,26 +55,6 @@ SELECT c.city, count(cus1.active) as "Active", count(cus2.active) as "Inactive" 
 GROUP BY c.city
 
 
-
-
-
--- (!) ВАРИАНТ РЕШЕНИЯ 2 --
-SELECT c.city, count(cus.active) as "Active", count(cus.active) as "Inactive"  FROM city c
-    LEFT JOIN address a ON a.city_id = c.city_id
-        LEFT JOIN customer cus ON a.address_id = cus.address_id
-GROUP BY c.city
-UNION
-SELECT c.city, count(cus.active) as "Active", count(cus.active) as "Inactive" FROM city c
-    LEFT JOIN address a ON a.city_id = c.city_id
-        LEFT JOIN customer cus ON a.address_id = cus.address_id
-WHERE cus.active = 1
-GROUP BY c.city
-UNION
-SELECT c.city, count(cus.active) as "Active", count(cus.active) as "Inactive" FROM city c
-    LEFT JOIN address a ON a.city_id = c.city_id
-        LEFT JOIN customer cus ON a.address_id = cus.address_id
-WHERE cus.active = 0
-GROUP BY c.city;
 
 -- вывести категорию фильмов, у которой самое большое кол-во часов суммарной аренды в городах (customer.address_id в этом city), и которые начинаются на букву “a”. То же самое сделать для городов в которых есть символ “-”. Написать все в одном запросе.
 
