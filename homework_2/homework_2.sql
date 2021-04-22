@@ -57,4 +57,21 @@ GROUP BY c.city
 
 
 -- вывести категорию фильмов, у которой самое большое кол-во часов суммарной аренды в городах (customer.address_id в этом city), и которые начинаются на букву “a”. То же самое сделать для городов в которых есть символ “-”. Написать все в одном запросе.
+SELECT p.rental_id as "Category ID", c.name as "Category", ci.city as "City", r.return_date as "Hours"
+FROM payment p
+    JOIN rental r ON p.rental_id = r.rental_id AND r.return_date IS NOT Null
 
+        JOIN customer cus ON r.customer_id = cus.customer_id
+            JOIN address add ON add.address_id = cus.address_id
+                JOIN city ci ON ci.city_id = add.city_id
+
+                    JOIN inventory i ON r.inventory_id = i.inventory_id
+                        JOIN film f ON i.film_id = f.film_id
+                            JOIN film_category fc ON f.film_id = fc.film_id
+                                JOIN category c ON fc.category_id = c.category_id
+
+WHERE c.name LIKE 'A%' AND ci.city LIKE '%-%'
+
+GROUP BY r.return_date, p.rental_id, ci.city, c.name
+ORDER BY 3 ASC
+LIMIT 1;
