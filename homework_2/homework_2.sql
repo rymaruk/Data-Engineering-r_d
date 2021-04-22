@@ -48,16 +48,16 @@ ORDER BY 2 DESC
 LIMIT 3;
 
 -- вывести города с количеством активных и неактивных клиентов (активный — customer.active = 1). Отсортировать по количеству неактивных клиентов по убыванию.
-SELECT c.city, count(cus1.active) as "Active", count(cus2.active) as "Inactive" FROM city c
+SELECT c.city as "City", count(cus1.active) as "Active", count(cus2.active) as "Inactive" FROM city c
     LEFT JOIN address a ON a.city_id = c.city_id
-        LEFT JOIN customer cus1 ON (a.address_id = cus1.address_id AND cus1.active =1)
+        LEFT JOIN customer cus1 ON (a.address_id = cus1.address_id AND cus1.active = 1)
             LEFT JOIN customer cus2 on (a.address_id = cus2.address_id AND cus2.active = 0)
 GROUP BY c.city
+ORDER BY 3 DESC;
 
 
 
 -- вывести категорию фильмов, у которой самое большое кол-во часов суммарной аренды в городах (customer.address_id в этом city), и которые начинаются на букву “a”. То же самое сделать для городов в которых есть символ “-”. Написать все в одном запросе.
-
 SELECT p.rental_id as "Category ID", c.name as "Category", ci.city as "City", max(date_part('hours', r.return_date - r.rental_date)) as "Hours"
 FROM payment p
     JOIN rental r ON p.rental_id = r.rental_id AND r.return_date IS NOT Null
