@@ -30,8 +30,7 @@ LIMIT 1;
 
 -- вывести названия фильмов, которых нет в inventory. Написать запрос без использования оператора IN.
 SELECT f.title as "Films" FROM film f
-    LEFT JOIN inventory i
-        ON f.film_id = i.film_id
+    LEFT JOIN inventory i USING (film_id)
             WHERE i.film_id IS NULL
 ORDER BY f.title;
 
