@@ -10,11 +10,11 @@ ORDER BY 2 DESC;
 -- вывести 10 актеров, чьи фильмы большего всего арендовали, отсортировать по убыванию.
 SELECT concat(a.first_name, ' ', a.last_name) as "Actor", f.rental_rate as "Rental rate"
 FROM film f
-    LEFT JOIN film_actor fa ON f.film_id = fa.film_id
-        LEFT JOIN actor a ON fa.actor_id = a.actor_id
+    LEFT JOIN film_actor fa USING (film_id)
+        LEFT JOIN actor a USING (actor_id)
 GROUP BY a.first_name, f.rental_rate, a.last_name
 ORDER BY f.rental_rate DESC
-LIMIT 100;
+LIMIT 10;
 
 -- вывести категорию фильмов, на которую потратили больше всего денег.
 SELECT p.rental_id as "Category ID", c.name as "Category", sum(p.amount) as "Total"
