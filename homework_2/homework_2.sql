@@ -19,11 +19,11 @@ LIMIT 10;
 -- вывести категорию фильмов, на которую потратили больше всего денег.
 SELECT p.rental_id as "Category ID", c.name as "Category", sum(p.amount) as "Total"
 FROM payment p
-    JOIN rental r ON p.rental_id = r.rental_id
-        JOIN inventory i ON r.inventory_id = i.inventory_id
-            JOIN film f ON i.film_id = f.film_id
-                JOIN film_category fc ON f.film_id = fc.film_id
-                    JOIN category c ON fc.category_id = c.category_id
+    JOIN rental r USING (rental_id)
+        JOIN inventory i USING (inventory_id)
+            JOIN film f USING (film_id)
+                JOIN film_category fc USING (film_id)
+                    JOIN category c USING (category_id)
 GROUP BY p.rental_id, c.name
 ORDER BY 3 DESC
 LIMIT 1;
