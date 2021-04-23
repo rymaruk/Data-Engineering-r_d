@@ -72,8 +72,6 @@ FROM payment p
                                 JOIN category c ON fc.category_id = c.category_id
 
 WHERE c.name LIKE 'A%' AND ci.city LIKE '%-%'
--- WHERE c.name LIKE 'A%'
--- WHERE ci.city LIKE '%-%'
 GROUP BY r.return_date, r.rental_date, p.rental_id, ci.city, c.name
 ORDER BY 4 DESC
 LIMIT 1;
