@@ -58,7 +58,7 @@ ORDER BY 3 DESC;
 
 
 -- вывести категорию фильмов, у которой самое большое кол-во часов суммарной аренды в городах (customer.address_id в этом city), и которые начинаются на букву “a”. То же самое сделать для городов в которых есть символ “-”. Написать все в одном запросе.
-SELECT p.rental_id as "Category ID", c.name as "Category", ci.city as "City", max(date_part('hours', r.return_date - r.rental_date)) as "Hours"
+SELECT p.rental_id as "Category ID", c.name as "Category", ci.city as "City", date_part('hours', r.return_date - r.rental_date) as "Rental hours"
 FROM payment p
     JOIN rental r ON p.rental_id = r.rental_id AND r.return_date IS NOT Null
 
@@ -74,7 +74,6 @@ FROM payment p
 WHERE c.name LIKE 'A%' AND ci.city LIKE '%-%'
 -- WHERE c.name LIKE 'A%'
 -- WHERE ci.city LIKE '%-%'
-GROUP BY r.return_date, p.rental_id, ci.city, c.name
-ORDER BY 3 ASC
+GROUP BY r.return_date, r.rental_date, p.rental_id, ci.city, c.name
+ORDER BY 4 DESC
 LIMIT 1;
-
