@@ -19,7 +19,7 @@ class AppProcessing:
 
     def get_config(self):
         try:
-            with open(os.path.join(os.getcwd(), './config.yml'), mode='r') as context:
+            with open(os.path.join(os.getcwd(), 'config.yml'), mode='r') as context:
                 return yaml.safe_load(context)
         except Exception as exc:
             raise Exception("Parse config error".format(exc))
