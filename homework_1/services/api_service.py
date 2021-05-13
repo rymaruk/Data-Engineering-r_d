@@ -7,10 +7,11 @@ import requests
 
 class ApiService:
     conf = None
+    access_token = None
 
     def __init__(self, conf):
         self.conf = conf
-
+        self.access_token = self.get_access_token()
 
     """
     Authorization. Get access token
@@ -19,12 +20,14 @@ class ApiService:
     def get_access_token(self):
         try:
             headers = {'content-type': 'application/json'}
-            url = f'{self.conf["api"]}{self.conf["endpoint"]}'
+            url = f'{self.conf["api"]["url"]}{self.conf["auth"]["endpoint"]}'
 
-            response = requests.post(url, data=json.dumps(self.conf["auth"]["payload"]), headers=headers)
+            payload = json.dumps(self.conf["auth"]["payload"])
+            response = requests.post(url, data=payload, headers=headers)
 
             if response.status_code != 200:
                 raise Exception("Auth Fail")
+
             try:
                 return response.json()['access_token']
             except Exception:
@@ -32,6 +35,27 @@ class ApiService:
 
         except HTTPError:
             print('Error auth')
+
+
+    """
+    Get data from API
+    """
+
+    def get_data(self, date):
+        try:
+            url = f'{self.conf["api"]["url"]}{self.conf["api"]["endpoint"]}'
+            headers = {'Authorization': f'JWT {self.access_token}'}
+            response = requests.get(url, params={"date": date}, headers=headers)
+
+            if response.status_code != 200:
+                raise Exception("Auth Fail")
+
+            data = response.json()
+
+            self.save_as(data, date)
+        except HTTPError:
+            pass
+        pass
 
     """
     Save data in

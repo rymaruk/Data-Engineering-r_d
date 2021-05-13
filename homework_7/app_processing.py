@@ -3,8 +3,8 @@ import os
 import yaml
 from services.api_service import ApiService
 
-class SchedulerDag:
 
+class AppProcessing:
     """
     Initialize main application
     """
@@ -27,6 +27,7 @@ class SchedulerDag:
     """
     Initializing
     """
+
     def run(self):
-        config = self.get_config() # get configuration form YML file
+        config = self.get_config()  # get configuration form YML file
         self.app_main(config, "2021-01-05")
