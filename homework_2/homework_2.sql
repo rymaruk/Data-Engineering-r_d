@@ -46,31 +46,7 @@ GROUP BY c.category_id, "Name"
 ORDER BY 2 DESC
 LIMIT 3;
 
--- вывести города с количеством активных и неактивных клиентов (активный — customer.active = 1).
--- Отсортировать по количеству неактивных клиентов по убыванию.
--- SELECT c2.city, count(c.active) as "Active" FROM customer c
---     LEFT JOIN address a ON a.address_id = c.address_id
---     LEFT JOIN city c2 on a.city_id = c2.city_id
---     WHERE c.active = 0
--- GROUP BY c2.city;
---
--- SELECT c.city, count(cus.active) as "Active", count(cus.active) as "Inactive"  FROM city c
---     LEFT JOIN address a ON a.city_id = c.city_id
---         LEFT JOIN customer cus ON a.address_id = cus.address_id
--- GROUP BY c.city
--- UNION
--- SELECT c.city, count(cus.active) as "Active", count(cus.active) as "Inactive" FROM city c
---     LEFT JOIN address a ON a.city_id = c.city_id
---         LEFT JOIN customer cus ON a.address_id = cus.address_id
--- WHERE cus.active = 1
--- GROUP BY c.city
--- UNION
--- SELECT c.city, count(cus.active) as "Active", count(cus.active) as "Inactive" FROM city c
---     LEFT JOIN address a ON a.city_id = c.city_id
---         LEFT JOIN customer cus ON a.address_id = cus.address_id
--- WHERE cus.active = 0
--- GROUP BY c.city;
-
+-- вывести города с количеством активных и неактивных клиентов (активный — customer.active = 1). Отсортировать по количеству неактивных клиентов по убыванию.
 SELECT c.city as "City", count(cus1.active) as "Active", count(cus2.active) as "Inactive" FROM city c
     LEFT JOIN address a ON a.city_id = c.city_id
         LEFT JOIN customer cus1 ON (a.address_id = cus1.address_id AND cus1.active = 1)
@@ -79,26 +55,8 @@ GROUP BY c.city
 ORDER BY 3 DESC;
 
 
--- SELECT c.city, CASE WHEN cus.active = 1 THEN 'Active' ELSE 'Inactive' END FROM city c
---     LEFT JOIN address a ON a.city_id = c.city_id
---         LEFT JOIN customer cus ON a.address_id = cus.address_id
 
--- SELECT c.city, count(cus.active) as Active, count(cus.active) as Inactive FROM city c
---     LEFT JOIN address a ON a.city_id = c.city_id
---         LEFT JOIN customer cus ON a.address_id = cus.address_id
--- LEFT JOIN (SELECT count(cus.active) as "Active" FROM city c
---     LEFT JOIN address a ON a.city_id = c.city_id
---         LEFT JOIN customer cus ON a.address_id = cus.address_id
--- WHERE cus.active = 1) as Active
--- LEFT JOIN (SELECT count(cus.active) as "Inactive" FROM city c
---     LEFT JOIN address a ON a.city_id = c.city_id
---         LEFT JOIN customer cus ON a.address_id = cus.address_id
--- WHERE cus.active = 0) as Inactive
-
--- вывести категорию фильмов, у которой самое большое кол-во часов суммарной аренды в городах (customer.address_id в этом city),
--- и которые начинаются на букву “a”.
--- То же самое сделать для городов в которых есть символ “-”. Написать все в одном запросе.
-
+-- вывести категорию фильмов, у которой самое большое кол-во часов суммарной аренды в городах (customer.address_id в этом city), и которые начинаются на букву “a”. То же самое сделать для городов в которых есть символ “-”. Написать все в одном запросе.
 SELECT p.rental_id as "Category ID", c.name as "Category", ci.city as "City", date_part('hours', r.return_date - r.rental_date) as "Rental hours"
 FROM payment p
     JOIN rental r ON p.rental_id = r.rental_id AND r.return_date IS NOT Null
@@ -116,4 +74,3 @@ WHERE c.name LIKE 'A%' AND ci.city LIKE '%-%'
 GROUP BY r.return_date, r.rental_date, p.rental_id, ci.city, c.name
 ORDER BY 4 DESC
 LIMIT 1;
-
