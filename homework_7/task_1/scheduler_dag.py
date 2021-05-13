@@ -1,10 +1,17 @@
+import os
+import sys
+
 from datetime import datetime
 from airflow import DAG
-from airflow.operators.python import PythonOperator
+from airflow.operators.python_operator import PythonOperator
 from app_processing import AppProcessing
+
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+
 
 def callable(**kwargs):
     AppProcessing().run()
+
 
 default_args = {
     'owner': 'airflow',
@@ -17,7 +24,7 @@ dag = DAG(
     'scheduler_dag',
     description='Scheduler DAG',
     schedule_interval='@hourly',
-    start_date=datetime(2021, 5, 13, 20, 14),
+    start_date=datetime(2021, 5, 13, 22, 32),
     default_args=default_args
 )
 

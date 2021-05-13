@@ -3,7 +3,6 @@ import os
 import yaml
 from services.api_service import ApiService
 
-
 class AppProcessing:
     """
     Initialize main application
